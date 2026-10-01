@@ -1,0 +1,32 @@
+2.1: La requette GET /api/v1/jeux/statistiques fonctionne avec un code 200
+
+
+bug
+
+ASSIGNÉ :
+<joey>
+
+DESCRIPTION :
+### Contexte
+La route plante si aucun jeu n'est présent en base (branche main).
+
+### Étapes pour reproduire
+1. Supprimer jeux.db
+2. Lancer l'API : fastapi dev app/main.py
+3. GET /api/v1/jeux/statistiques
+
+### Comportement attendu
+200 OK avec des stats à 0 ou null.
+
+### Comportement observé
+500 Internal Server Error
+{"detail": "Internal Server Error"}
+
+Trace terminal :
+[Coller la trace PowerShell ici]
+
+### Environnement
+Windows 11, Python 3.14, SQLite, branche main.
+
+### Pistes
+Division par zéro ou moyenne sur jeu vide.
