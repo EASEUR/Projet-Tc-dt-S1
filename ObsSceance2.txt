@@ -1,0 +1,54 @@
+Exercice 1 : Le backlog (les 5 issues)
+
+Issue 1 (bug) (Oscar)
+Titre : GET /api/v1/jeux/recommandes renvoie une erreur 500
+Étapes : 1. Lancer l'API. 2. Appeler /api/v1/jeux/recommandes
+Attendu : Statut 200 avec les jeux
+Observé : Statut 500 (à copier depuis le terminal)
+Environnement : Windows, Python, SQLite, branche main
+
+Issue 2 (bug) (Oscar)
+Titre : PATCH /api/v1/jeux/{id} refuse la modification de note pour titre existant
+Étapes : 1. Connecté en admin sur /docs. 2. Modifier la note d'un jeu
+Attendu : La note est modifiée
+Observé : Erreur de conflit sur le titre
+Environnement : Windows, Python, SQLite, branche main
+
+Issue 3 (évolution) (Joey)
+Titre : Filtrer les éditeurs par pays
+Besoin : Afficher les éditeurs d'un pays spécifique
+Critères : 
+- Le filtre renvoie un statut 200 avec les données
+- Retourne vide avec un 200 si pays inconnu
+- Les tests sont écrits
+
+Issue 4 (évolution) (MohamedSaydTraore)
+Titre : Filtrer les jeux par années
+Besoin : Trouver les jeux sortis entre deux années
+Critères : 
+- Le filtre min/max fonctionne et renvoie les jeux de la période
+- Erreur 422 si min est plus grand que max
+- Les tests sont écrits
+
+Issue 5 (évolution) (Florent)
+Titre : Gérer les plateformes
+Besoin : Associer les plateformes (PC, Switch, etc.) aux jeux
+Critères : 
+- Rédaction d'un ADR pour choisir la méthode technique avant de coder
+
+Exercice 2 : Message de blocage 
+
+Bloqué sur le lancement de l'API.
+Erreur : pydantic_core ValidationError sur cle_secrete.
+Déjà essayé : refaire un .env avec juste la variable DATABASE_URL.
+Hypothèse : il manque la clé secrète obligatoire pour Pydantic.
+@samir, peux-tu me lister les noms des variables manquantes du .env d'ici 14h ?
+
+Exercice 3 : Défi PR 
+
+Verdict : Request changes
+PR fautive : PR #2
+Emplacement : Fichier de la requête, sur la ligne avec text(f"SELECT...")
+Commentaire : issue (bloquant) : L'utilisation d'une f-string insère l'entrée utilisateur directement dans le SQL. 
+Cela crée une faille d'injection SQL qui permet de lire les données utilisateurs comme les mots de passe. 
+Il faut utiliser les paramètres liés à la place.
