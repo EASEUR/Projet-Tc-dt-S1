@@ -5,6 +5,8 @@ manquante empêche le lancement avec un message explicite, au lieu de produire
 un `None` qui échouera plus tard, en production, au pire moment.
 """
 
+import json
+
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -19,7 +21,7 @@ class Configuration(BaseSettings):
     # Facultatives, avec une valeur par défaut raisonnable.
     algorithme_jeton: str = "HS256"
     duree_jeton_minutes: int = 30
-    origines_autorisees: list[str] = ["http://localhost:5173"]
+    origines_autorisees: str | list[str] = "http://localhost:5173"
     environnement: str = "developpement"
     niveau_journal: str = "INFO"
     echo_sql: bool = False
@@ -29,10 +31,24 @@ class Configuration(BaseSettings):
     @field_validator("origines_autorisees", mode="before")
     @classmethod
     def decouper_origines(cls, valeur: object) -> object:
-        """Accepte `A,B` autant qu'une liste JSON, pour les plateformes d'hébergement."""
-        if isinstance(valeur, str) and not valeur.strip().startswith("["):
-            return [origine.strip() for origine in valeur.split(",") if origine.strip()]
+        """Accepte `A`, `A,B` ou une liste JSON pour les plateformes d'hébergement."""
+        if isinstance(valeur, str):
+            valeur = valeur.strip()
+            if not valeur:
+                return []
+            if valeur.startswith("["):
+                return json.loads(valeur)
+            if "," in valeur:
+                return [origine.strip() for origine in valeur.split(",") if origine.strip()]
+            return [valeur]
         return valeur
+
+    @property
+    def origines_autorisees_liste(self) -> list[str]:
+        valeurs = self.origines_autorisees
+        if isinstance(valeurs, str):
+            return self.decouper_origines(valeurs)
+        return list(valeurs)
 
     @field_validator("database_url")
     @classmethod
