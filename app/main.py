@@ -73,7 +73,7 @@ app = FastAPI(
 # les navigateurs. Et CORS protège le navigateur, pas l'API — curl l'ignore.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=configuration.origines_autorisees,
+    allow_origins=configuration.origines_autorisees_liste,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -162,10 +162,12 @@ def statistiques(session: Session) -> dict:
         select(Jeu.genre, func.count(Jeu.id)).group_by(Jeu.genre).order_by(Jeu.genre)
     ).all()
 
+    moyenne_valeur = 0.0 if moyenne is None else round(float(moyenne), 2)
+
     return {
         "nombre": nombre or 0,
         # `func.avg` renvoie un Decimal sur PostgreSQL : le `float()` est requis.
-        "moyenne": round(float(moyenne), 2),
+        "moyenne": moyenne_valeur,
         "meilleure_note": meilleure,
         "par_genre": {genre: compte for genre, compte in par_genre},
     }
