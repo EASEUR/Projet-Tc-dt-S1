@@ -244,3 +244,5 @@ Le but est de garantir qu’une modification ne soit jamais validée seule, et q
 ## Licence
 
 Projet pédagogique pour le module Travail collaboratif & documentation technique.
+
+Mohamed,Joey,Florent,Oscar
